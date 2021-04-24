@@ -1,11 +1,9 @@
+using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace SSHBrowser
 {
@@ -13,7 +11,11 @@ namespace SSHBrowser
     {
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += (_, _) => DisposeServerCaches();
+
             CreateHostBuilder(args).Build().Run();
+
+            DisposeServerCaches();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -27,5 +29,16 @@ namespace SSHBrowser
                     webBuilder.UseUrls("http://*:80", "https://*:443");
 #endif
                 });
+
+        private static void DisposeServerCaches()
+        {
+            IEnumerable<Type> caches = Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.Namespace.Equals($"{nameof(SSHBrowser)}.{nameof(SSHBrowser.Server)}"));
+
+            foreach (Type cache in caches)
+                cache.GetMethod(nameof(IDisposable.Dispose)).Invoke(null, null);
+        }
     }
 }
