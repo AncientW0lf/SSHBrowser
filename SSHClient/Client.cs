@@ -18,7 +18,7 @@ namespace SSHClient
             _scp.Connect();
         }
 
-        public string[] ListFiles(string dir, bool showHidden = false)
+        public string[] GetFiles(string dir, bool showHidden = false)
         {
             return _ssh
                 .RunCommand($"ls{(showHidden ? " -A" : "")} \"{dir}\"")
