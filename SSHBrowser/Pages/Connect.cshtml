@@ -1,0 +1,23 @@
+﻿@page
+@model ConnectModel
+@{
+    ViewData["Title"] = "Connect with SSH";
+}
+
+<p>You currently do not have any open SSH connections. Please enter your credentials here:</p>
+
+<form action="api/connect" method="post">
+    <div class="form-group">
+        <label for="host">Host</label>
+        <input type="text" class="form-control" id="host" name="host" placeholder="127.0.0.1">
+    </div>
+    <div class="form-group">
+        <label for="user">Username</label>
+        <input type="text" class="form-control" id="user" name="user" placeholder="User">
+    </div>
+    <div class="form-group">
+        <label for="passwd">Password</label>
+        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="123456">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
