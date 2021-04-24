@@ -5,8 +5,7 @@
 }
 
 <div class="input-group mb-3">
-    <input id="pathInput" type="text" class="form-control" placeholder="Path" aria-label="Path"
-        value="@Model.DirPath"></input>
+    <input id="pathInput" type="text" class="form-control" placeholder="Path" aria-label="Path" value="@Model.DirPath">
     <div class="input-group-append">
         <button class="btn btn-outline-secondary" type="button" onclick="goToPath()">&#62;</button>
     </div>
@@ -14,7 +13,7 @@
 
 @for (int i = 0; i < Model.Files.Length; i++)
 {
-    <p>@Model.Files[i]</p>
+    <a href="#" onclick="goToPath('@Model.DirPath' + '/' + '@Model.Files[i]')">@Model.Files[i]</a>
 }
 
 @section Scripts {
