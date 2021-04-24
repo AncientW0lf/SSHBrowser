@@ -13,6 +13,8 @@ namespace SSHBrowser.Pages
     {
         public string DirPath { get; private set; } = "/";
 
+        public string[] Files { get; private set; } = new string[0];
+
         private readonly ILogger<IndexModel> _logger;
 
         public IndexModel(ILogger<IndexModel> logger)
@@ -23,10 +25,15 @@ namespace SSHBrowser.Pages
         public void OnGet(string p)
         {
             if (SSHCache.Client == null)
+            {
                 Response.Redirect("/connect");
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(p))
                 DirPath = p;
+
+            Files = SSHCache.Client.GetFiles(DirPath);
         }
     }
 }
